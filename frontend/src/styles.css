@@ -377,6 +377,93 @@ select {
   background: #f8faf8;
 }
 
+.reminder-list {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  max-height: 420px;
+  overflow: auto;
+}
+
+.reminder-item {
+  display: grid;
+  grid-template-columns: auto minmax(110px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 64px;
+  padding: 12px;
+  border: 1px solid #e1e9e4;
+}
+
+.reminder-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  color: #0f6f58;
+  background: #e6f5f0;
+}
+
+.reminder-body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.reminder-body strong {
+  font-size: 13px;
+}
+
+.reminder-body span {
+  color: #60726c;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reminder-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.channel-pill {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.channel-pill.sms {
+  color: #6b3a00;
+  background: #fff3d6;
+}
+
+.channel-pill.in_app {
+  color: #0f5d4b;
+  background: #dff6ed;
+}
+
+.event-pill {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.event-pill.booking_created {
+  color: #1a5c3a;
+  background: #d6f5e2;
+}
+
+.event-pill.booking_canceled {
+  color: #7a3322;
+  background: #fde8e2;
+}
+
 @media (max-width: 1040px) {
   .main-grid,
   .app-header {

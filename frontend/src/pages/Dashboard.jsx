@@ -5,6 +5,7 @@ import { BookingList } from '../components/BookingList.jsx'
 import { CourtSchedule } from '../components/CourtSchedule.jsx'
 import { DateTabs } from '../components/DateTabs.jsx'
 import { Header } from '../components/Header.jsx'
+import { ReminderList } from '../components/ReminderList.jsx'
 import { todayISO } from '../utils/date.js'
 
 export function Dashboard() {
@@ -12,6 +13,7 @@ export function Dashboard() {
   const [members, setMembers] = useState([])
   const [slots, setSlots] = useState([])
   const [bookings, setBookings] = useState([])
+  const [reminders, setReminders] = useState([])
   const [selectedDate, setSelectedDate] = useState(todayISO())
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [contactName, setContactName] = useState('')
@@ -19,14 +21,16 @@ export function Dashboard() {
   const [message, setMessage] = useState('')
 
   async function loadBaseData() {
-    const [courtData, memberData, bookingData] = await Promise.all([
+    const [courtData, memberData, bookingData, reminderData] = await Promise.all([
       api.getCourts(),
       api.getMembers(),
       api.getBookings(),
+      api.getReminders(),
     ])
     setCourts(courtData)
     setMembers(memberData)
     setBookings(bookingData)
+    setReminders(reminderData)
   }
 
   async function loadSlots(date) {
@@ -127,6 +131,7 @@ export function Dashboard() {
             onSettle={handleSettle}
             onCancel={handleCancel}
           />
+          <ReminderList reminders={reminders} />
         </div>
       </div>
     </main>

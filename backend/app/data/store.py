@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, timedelta
 
-from app.models.domain import Booking, Court, Member, TimeSlot
+from app.models.domain import Booking, Court, Member, Reminder, TimeSlot
 
 
 class InMemoryStore:
@@ -11,14 +11,21 @@ class InMemoryStore:
         self.members: dict[int, Member] = {}
         self.time_slots: dict[int, TimeSlot] = {}
         self.bookings: dict[int, Booking] = {}
+        self.reminders: dict[int, Reminder] = {}
         self._next_slot_id = 1
         self._next_booking_id = 1
+        self._next_reminder_id = 1
         self._seed()
 
     def next_booking_id(self) -> int:
         booking_id = self._next_booking_id
         self._next_booking_id += 1
         return booking_id
+
+    def next_reminder_id(self) -> int:
+        reminder_id = self._next_reminder_id
+        self._next_reminder_id += 1
+        return reminder_id
 
     def next_slot_id(self) -> int:
         slot_id = self._next_slot_id

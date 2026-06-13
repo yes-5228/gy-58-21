@@ -37,3 +37,16 @@ class Booking(BaseModel):
     payable_amount: float
     status: str = "pending"
     created_at: str
+
+
+class Reminder(BaseModel):
+    id: int
+    booking_id: int
+    member_id: int
+    member_name: str
+    contact_name: str
+    event_type: str
+    channel: str
+    status: str = "pending"
+    content: str = ""
+    created_at: str

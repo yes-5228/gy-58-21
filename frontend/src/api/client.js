@@ -40,4 +40,5 @@ export const api = {
     request(`/bookings/${bookingId}/cancel`, {
       method: 'POST',
     }),
+  getReminders: () => request('/reminders'),
 }

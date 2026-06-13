@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from app.data.store import store
 from app.models.domain import Booking
 from app.schemas import BookingCreate
+from app.services import reminders as reminder_service
 from app.services.settlement import calculate_payable
 
 
@@ -40,6 +41,7 @@ def create_booking(payload: BookingCreate) -> Booking:
     )
     store.bookings[booking_id] = booking
     store.time_slots[slot.id] = slot.model_copy(update={"status": "booked"})
+    _generate_booking_reminders(booking, slot, "booking_created")
     return booking
 
 
@@ -63,4 +65,30 @@ def cancel_booking(booking_id: int) -> Booking:
     slot = store.time_slots.get(booking.slot_id)
     if slot:
         store.time_slots[slot.id] = slot.model_copy(update={"status": "available"})
+    _generate_booking_reminders(booking, slot, "booking_canceled")
     return canceled
+
+
+def _generate_booking_reminders(booking: Booking, slot, event_type: str) -> None:
+    event_label = "预约成功" if event_type == "booking_created" else "预约已取消"
+    slot_info = f"{slot.label}" if slot else ""
+    sms_content = f"【羽毛球预约】{booking.contact_name}{event_label}，时段{slot_info}，金额¥{booking.payable_amount:.2f}"
+    in_app_content = f"{booking.contact_name}{event_label}，时段{slot_info}，金额¥{booking.payable_amount:.2f}"
+    reminder_service.create_reminder(
+        booking_id=booking.id,
+        member_id=booking.member_id,
+        member_name=booking.member_name,
+        contact_name=booking.contact_name,
+        event_type=event_type,
+        channel="sms",
+        content=sms_content,
+    )
+    reminder_service.create_reminder(
+        booking_id=booking.id,
+        member_id=booking.member_id,
+        member_name=booking.member_name,
+        contact_name=booking.contact_name,
+        event_type=event_type,
+        channel="in_app",
+        content=in_app_content,
+    )

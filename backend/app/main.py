@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import bookings, courts, members
+from app.routes import bookings, courts, members, reminders
 
 app = FastAPI(title="Badminton Booking API", version="1.0.0")
 
@@ -16,6 +16,7 @@ app.add_middleware(
 app.include_router(courts.router, prefix="/api")
 app.include_router(members.router, prefix="/api")
 app.include_router(bookings.router, prefix="/api")
+app.include_router(reminders.router, prefix="/api")
 
 
 @app.get("/api/health")
